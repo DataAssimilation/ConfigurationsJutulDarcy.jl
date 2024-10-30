@@ -130,18 +130,13 @@ end
     component_heat_capacity::FieldOptions = FieldOptions(4184.0)
 
     injection::WellOptions = WellOptions(;
-        trajectory=(
-            SVector(1875.0, 50.0, 1693.75),
-            SVector(1875.0, 50.0, 1693.75+37.5),
-        ), name=:Injector
+        trajectory=(SVector(1875.0, 50.0, 1693.75), SVector(1875.0, 50.0, 1693.75 + 37.5)),
+        name=:Injector,
     )
 
     production::WellOptions = WellOptions(;
         active=false,
-        trajectory=(
-            SVector(2875.0, 50.0, 1693.75),
-            SVector(2875.0, 50.0, 1693.75+37.5),
-        ),
+        trajectory=(SVector(2875.0, 50.0, 1693.75), SVector(2875.0, 50.0, 1693.75 + 37.5)),
         name=:Producer,
     )
 
@@ -155,7 +150,7 @@ end
                 ),
             ),
         ),
-        TimeDependentOptions(; years=1.0, steps=10, controls=[]),
+        TimeDependentOptions(; years=1.0, steps=10, controls=()),
     )
 end
 

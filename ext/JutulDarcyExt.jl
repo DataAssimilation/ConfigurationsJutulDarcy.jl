@@ -71,9 +71,7 @@ function setup_control(options)
     return error("Not implemented for type: $type")
 end
 
-function JutulDarcy.setup_reservoir_forces(
-    model, options::Tuple; bc
-)
+function JutulDarcy.setup_reservoir_forces(model, options::Tuple; bc)
     nsteps = sum(x -> x.steps, options)
     dt = fill(0.0, nsteps)
     forces = Vector{Any}(undef, nsteps)
