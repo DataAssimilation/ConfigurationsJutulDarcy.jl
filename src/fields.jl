@@ -43,25 +43,3 @@ function create_field(grid_dims::Tuple, options::FieldFileOptions)
 end
 
 function resize_field end
-
-# function get_permeability(params)
-#     compass_dir = params["compass_dir"]
-#     n = Tuple(params["transition"]["n"])
-#     type = options["type"]
-#     key = get(options, "key", "K")
-#     if type == "file_Kphi"
-
-#     end
-#     if type == "file_K"
-#         file_name = options["K_file"]
-#         file_path = joinpath(compass_dir, file_name)
-#         K = load(file_path, key)
-#         K = K * mD_to_meters2 # Convert from millidarcy to square meters.
-#         if ndims(K) == 3 && size(K, 2) == 1
-#             K = dropdims(K; dims=2)
-#         end
-#         K = imresize(K, n[1], n[end])
-#         return K
-#     end
-#     error("Unknown permeability type: '$(type)'")
-# end
