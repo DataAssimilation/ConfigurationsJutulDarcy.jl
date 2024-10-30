@@ -55,7 +55,9 @@ end
     name::Symbol = :field
     suboptions
 end
-FieldOptions(value; kwargs...) = FieldOptions(; kwargs..., suboptions=FieldConstantOptions(; value))
+function FieldOptions(value; kwargs...)
+    return FieldOptions(; kwargs..., suboptions=FieldConstantOptions(; value))
+end
 
 @option struct WellOptions
     active::Bool = true
@@ -158,17 +160,17 @@ end
 
 # Define copy constructors.
 for T in [
-        :SystemOptions,
-        :CO2BrineOptions,
-        :FieldOptions,
-        :FieldConstantOptions,
-        :FieldFileOptions,
-        :FluidOptions,
-        :WellOptions,
-        :WellRateOptions,
-        :WellPressureOptions,
-        :TimeDependentOptions
-    ]
+    :SystemOptions,
+    :CO2BrineOptions,
+    :FieldOptions,
+    :FieldConstantOptions,
+    :FieldFileOptions,
+    :FluidOptions,
+    :WellOptions,
+    :WellRateOptions,
+    :WellPressureOptions,
+    :TimeDependentOptions,
+]
     @eval function $T(x::$T; kwargs...)
         default_kwargs = (f => getfield(x, f) for f in fieldnames($T))
         return $T(; default_kwargs..., kwargs...)

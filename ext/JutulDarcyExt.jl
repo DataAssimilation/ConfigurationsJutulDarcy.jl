@@ -10,8 +10,14 @@ function Jutul.CartesianMesh(options::MeshOptions)
     return CartesianMesh(options.n, options.n .* options.d; origin=options.origin)
 end
 
-ConfigurationsJutulDarcy.create_field(mesh::CartesianMesh, options::FieldOptions) = create_field(mesh.dims, options)
-ConfigurationsJutulDarcy.create_field(mesh::UnstructuredMesh, options::FieldOptions) = create_field(nothing, options.suboptions)
+function ConfigurationsJutulDarcy.create_field(mesh::CartesianMesh, options::FieldOptions)
+    return create_field(mesh.dims, options)
+end
+function ConfigurationsJutulDarcy.create_field(
+    mesh::UnstructuredMesh, options::FieldOptions
+)
+    return create_field(nothing, options.suboptions)
+end
 
 function JutulDarcy.reservoir_domain(mesh, options::JutulOptions; kwargs...)
     porosity = create_field(mesh, options.porosity)
@@ -42,7 +48,9 @@ function JutulDarcy.setup_well(D::DataDomain, options::WellOptions; kwargs...)
     mesh = physical_representation(D)
     reservoir_cells = find_enclosing_cells(mesh, options.trajectory)
     if length(reservoir_cells) == 0
-        error("Invalid options: well trajectory does not pass through mesh: $(options.name) $(options.trajectory)")
+        error(
+            "Invalid options: well trajectory does not pass through mesh: $(options.name) $(options.trajectory)",
+        )
     end
     return setup_well(
         D, reservoir_cells; name=options.name, simple_well=options.simple_well, kwargs...
@@ -93,7 +101,9 @@ function JutulDarcy.setup_reservoir_model(domain, options::CO2BrineOptions; kwar
     )
 end
 
-function JutulDarcy.setup_reservoir_state(model, options::CO2BrineOptions; Saturations=nothing, kwargs...)
+function JutulDarcy.setup_reservoir_state(
+    model, options::CO2BrineOptions; Saturations=nothing, kwargs...
+)
     if options.co2_physics == :immiscible
         state0 = setup_reservoir_state(model; Saturations, kwargs...)
     else
