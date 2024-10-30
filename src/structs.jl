@@ -1,4 +1,5 @@
-using Configurations
+using Configurations: @option
+using StaticArrays: SVector
 
 export JutulOptions, MeshOptions
 export SystemOptions, CO2BrineOptions, get_label
@@ -61,7 +62,7 @@ end
 
 @option struct WellOptions
     active::Bool = true
-    trajectory::Array
+    trajectory::Tuple
     simple_well::Bool = true
     name::Symbol
 end
@@ -82,7 +83,7 @@ end
 @option struct TimeDependentOptions
     years::Float64
     steps::Int64
-    controls::Vector
+    controls::Tuple
 end
 
 @option struct JutulOptions
@@ -129,37 +130,39 @@ end
     component_heat_capacity::FieldOptions = FieldOptions(4184.0)
 
     injection::WellOptions = WellOptions(;
-        trajectory=[
-            1875.0 50.0 1693.75
-            1875.0 50.0 1693.75+37.5
-        ], name=:Injector
+        trajectory=(
+            SVector(1875.0, 50.0, 1693.75),
+            SVector(1875.0, 50.0, 1693.75+37.5),
+        ), name=:Injector
     )
 
     production::WellOptions = WellOptions(;
         active=false,
-        trajectory=[
-            2875.0 50.0 1693.75
-            2875.0 50.0 1693.75+37.5
-        ],
+        trajectory=(
+            SVector(2875.0, 50.0, 1693.75),
+            SVector(2875.0, 50.0, 1693.75+37.5),
+        ),
         name=:Producer,
     )
 
-    time::Vector{TimeDependentOptions} = [
+    time::Tuple = (
         TimeDependentOptions(;
             years=1.0,
             steps=10,
-            controls=[
+            controls=(
                 WellRateOptions(;
                     type="injector", name=:Injector, fluid_density=5e2, rate_mtons_year=1e-3
                 ),
-            ],
+            ),
         ),
         TimeDependentOptions(; years=1.0, steps=10, controls=[]),
-    ]
+    )
 end
 
 # Define copy constructors.
 for T in [
+    :JutulOptions,
+    :MeshOptions,
     :SystemOptions,
     :CO2BrineOptions,
     :FieldOptions,

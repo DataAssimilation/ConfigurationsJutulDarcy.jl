@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v0.0.4] - 2024-10-30
+
+### Changed
+
+- Made the structs hash-stable by removing all mutable types
+
 ## [v0.0.3] - 2024-10-30
 
 ### Added

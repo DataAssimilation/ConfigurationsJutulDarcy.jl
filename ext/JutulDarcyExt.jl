@@ -46,7 +46,7 @@ import JutulDarcy.Jutul: find_enclosing_cells
 
 function JutulDarcy.setup_well(D::DataDomain, options::WellOptions; kwargs...)
     mesh = physical_representation(D)
-    reservoir_cells = find_enclosing_cells(mesh, options.trajectory)
+    reservoir_cells = find_enclosing_cells(mesh, collect(options.trajectory))
     if length(reservoir_cells) == 0
         error(
             "Invalid options: well trajectory does not pass through mesh: $(options.name) $(options.trajectory)",
@@ -72,7 +72,7 @@ function setup_control(options)
 end
 
 function JutulDarcy.setup_reservoir_forces(
-    model, options::Vector{<:TimeDependentOptions}; bc
+    model, options::Tuple; bc
 )
     nsteps = sum(x -> x.steps, options)
     dt = fill(0.0, nsteps)
