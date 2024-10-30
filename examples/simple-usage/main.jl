@@ -16,14 +16,14 @@ injection_well_trajectory = [
 options = JutulOptions(;
     mesh=MeshOptions(; n=(100, 1, 50), d=(1e1, 1e0, 1e0)),
     system=CO2BrineOptions(; co2_physics=:immiscible, thermal=false),
-    porosity=FieldOptions(; value=-1.0),
-    permeability=FieldOptions(; value=-1.0),
-    temperature=FieldOptions(; value=convert_to_si(30.0, :Celsius)),
-    rock_density=FieldOptions(; value=30.0),
-    rock_heat_capacity=FieldOptions(; value=900.0),
-    rock_thermal_conductivity=FieldOptions(; value=3.0),
-    fluid_thermal_conductivity=FieldOptions(; value=0.6),
-    component_heat_capacity=FieldOptions(; value=4184.0),
+    porosity=FieldOptions(-1.0),
+    permeability=FieldOptions(-1.0),
+    temperature=FieldOptions(convert_to_si(30.0, :Celsius)),
+    rock_density=FieldOptions(30.0),
+    rock_heat_capacity=FieldOptions(900.0),
+    rock_thermal_conductivity=FieldOptions(3.0),
+    fluid_thermal_conductivity=FieldOptions(0.6),
+    component_heat_capacity=FieldOptions(4184.0),
     injection=WellOptions(; trajectory=injection_well_trajectory, name=:Injector),
     time=[
         TimeDependentOptions(;
@@ -187,7 +187,7 @@ p0 = zeros(nc)
 depth = domain[:cell_centroids][3, :]
 g = Jutul.gravity_constant
 @. p0 = 200bar + depth * g * 1000.0
-state0 = setup_reservoir_state(model, options.system; Pressure=p0)
+state0 = setup_reservoir_state(model, options.system; Pressure=p0, Saturations=[1.0, 0.0])
 parameters = setup_parameters(model);
 
 # ## Find the boundary and apply a constant pressureboundary condition

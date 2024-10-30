@@ -1,6 +1,7 @@
 module ConfigurationsJutulDarcy
 
 include("structs.jl")
+include("fields.jl")
 
 using PackageExtensionCompat
 function __init__()
