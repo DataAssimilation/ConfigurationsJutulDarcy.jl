@@ -49,7 +49,7 @@ function update_header(content, pth)
         # # Reproducing example
         # The packages for this example are documented in the $project_link.
         # # Accessing example
-        # This can also be accessed as a $(join(links, ", a", ", or a ")).
+        # This can also be accessed as a $(length(links) == 2 ? join(links, " or a ") : join(links, ", a", ", or a ")).
     """ * content
 end
 

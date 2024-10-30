@@ -1,10 +1,11 @@
 [deps]
-Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
 ConfigurationsJutulDarcy = "8c1f6541-c3b1-479a-a223-9e83eb45f3f9"
-Literate = "98b081ad-f1c9-55d3-8b20-4c87d4299306"
-Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
-Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
+Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
+ImageTransformations = "02fcd773-0e25-5acc-982a-7f6622650795"
 JutulDarcy = "82210473-ab04-4dce-b31b-11573c4f8e0a"
+Literate = "98b081ad-f1c9-55d3-8b20-4c87d4299306"
+Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
 [compat]
 Literate = "2.18"
