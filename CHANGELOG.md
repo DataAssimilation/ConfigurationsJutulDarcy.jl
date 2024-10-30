@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v0.0.3] - 2024-10-30
+
+### Added
+
+- Added option to read field from file.
+
+### Changed
+
+- Specified type for each struct field.
+- `FieldOptions` interface has been changed.
+
+### Removed
+
+- `FieldOptions` no longer has the ability to pad the boundary. Use JutulDarcy to
+  set the boundary conditions instead.
+
 ## [v0.0.2] - 2024-10-17
 
 ### Added
