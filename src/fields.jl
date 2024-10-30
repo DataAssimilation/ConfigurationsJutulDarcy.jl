@@ -2,7 +2,7 @@
 export create_field
 
 function create_field(mesh_options::MeshOptions, options::FieldOptions)
-    create_field(mesh_options.n, options)
+    return create_field(mesh_options.n, options)
 end
 
 function create_field(grid_dims, options::FieldOptions)
@@ -33,7 +33,7 @@ function create_field(grid_dims::Tuple, options::FieldFileOptions)
         K = K * mD_to_meters2 # Convert from millidarcy to square meters.
         return K
     end
-    if options.resize && grid_dims[[1,end]] != size(field)[end-1:end]
+    if options.resize && grid_dims[[1, end]] != size(field)[(end - 1):end]
         if length(methods(resize_field)) == 0
             error("Load ImageTransformations to be able to resize")
         end
@@ -50,7 +50,7 @@ function resize_field end
 #     type = options["type"]
 #     key = get(options, "key", "K")
 #     if type == "file_Kphi"
-        
+
 #     end
 #     if type == "file_K"
 #         file_name = options["K_file"]
