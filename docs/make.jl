@@ -1,7 +1,6 @@
 using Pkg: Pkg
 using ConfigurationsJutulDarcy
 using Documenter
-using Random # Loads ConfigurationsJutulDarcy Random extension.
 
 using Literate
 
@@ -103,11 +102,19 @@ if ConfigurationsJutulDarcy.HAS_NATIVE_EXTENSIONS
         :(using ConfigurationsJutulDarcy, Test);
         recursive=true,
     )
+    using ImageTransformations
+    DocMeta.setdocmeta!(
+        ConfigurationsJutulDarcy.get_extension(ConfigurationsJutulDarcy, :ImageTransformationsExt),
+        :DocTestSetup,
+        :(using ConfigurationsJutulDarcy, Test);
+        recursive=true,
+    )
 end
 makedocs(;
     modules=[
         ConfigurationsJutulDarcy,
         ConfigurationsJutulDarcy.get_extension(ConfigurationsJutulDarcy, :JutulDarcyExt),
+        ConfigurationsJutulDarcy.get_extension(ConfigurationsJutulDarcy, :ImageTransformationsExt),
     ],
     authors="Grant Bruer gbruer15@gmail.com and contributors",
     sitename="ConfigurationsJutulDarcy.jl",

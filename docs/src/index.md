@@ -25,3 +25,12 @@ Modules = [ConfigurationsJutulDarcy.get_extension(ConfigurationsJutulDarcy, :Jut
 ```@autodocs
 Modules = [ConfigurationsJutulDarcy.get_extension(ConfigurationsJutulDarcy, :JutulDarcyExt)]
 ```
+
+
+```@index
+Modules = [ConfigurationsJutulDarcy.get_extension(ConfigurationsJutulDarcy, :ImageTransformationsExt)]
+```
+
+```@autodocs
+Modules = [ConfigurationsJutulDarcy.get_extension(ConfigurationsJutulDarcy, :ImageTransformationsExt)]
+```

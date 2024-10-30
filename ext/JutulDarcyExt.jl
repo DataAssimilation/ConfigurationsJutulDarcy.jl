@@ -4,27 +4,14 @@ using ConfigurationsJutulDarcy
 using JutulDarcy
 using JutulDarcy.Jutul
 
+mD_to_meters2 = 1e-3 * si_unit(:darcy)
+
 function Jutul.CartesianMesh(options::MeshOptions)
-    return CartesianMesh(options.n, options.n .* options.d)
+    return CartesianMesh(options.n, options.n .* options.d; origin=options.origin)
 end
 
-function create_field(mesh, options::FieldOptions)
-    if options.type == "constant"
-        if options.pad_boundary
-            field = fill(options.value, mesh.dims)
-            if mesh.dims[2] == 1
-                field = dropdims(field; dims=2)
-            end
-            field[1, :] .= options.pad_value
-            field[end, :] .= options.pad_value
-            field[:, end] .= options.pad_value
-            return field
-        else
-            return options.value
-        end
-    end
-    return error("Unknown field type: '$(options.type)'")
-end
+ConfigurationsJutulDarcy.create_field(mesh::CartesianMesh, options::FieldOptions) = create_field(mesh.dims, options)
+ConfigurationsJutulDarcy.create_field(mesh::UnstructuredMesh, options::FieldOptions) = create_field(nothing, options.suboptions)
 
 function JutulDarcy.reservoir_domain(mesh, options::JutulOptions; kwargs...)
     porosity = create_field(mesh, options.porosity)
@@ -54,6 +41,9 @@ import JutulDarcy.Jutul: find_enclosing_cells
 function JutulDarcy.setup_well(D::DataDomain, options::WellOptions; kwargs...)
     mesh = physical_representation(D)
     reservoir_cells = find_enclosing_cells(mesh, options.trajectory)
+    if length(reservoir_cells) == 0
+        error("Invalid options: well trajectory does not pass through mesh: $(options.name) $(options.trajectory)")
+    end
     return setup_well(
         D, reservoir_cells; name=options.name, simple_well=options.simple_well, kwargs...
     )
@@ -103,11 +93,11 @@ function JutulDarcy.setup_reservoir_model(domain, options::CO2BrineOptions; kwar
     )
 end
 
-function JutulDarcy.setup_reservoir_state(model, options::CO2BrineOptions; kwargs...)
+function JutulDarcy.setup_reservoir_state(model, options::CO2BrineOptions; Saturations=nothing, kwargs...)
     if options.co2_physics == :immiscible
-        state0 = setup_reservoir_state(model; Saturations=[1.0, 0.0], kwargs...)
+        state0 = setup_reservoir_state(model; Saturations, kwargs...)
     else
-        state0 = setup_reservoir_state(model; OverallMoleFractions=[1.0, 0.0], kwargs...)
+        state0 = setup_reservoir_state(model; OverallMoleFractions=Saturations, kwargs...)
     end
 end
 

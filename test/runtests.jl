@@ -29,6 +29,13 @@ ts = @testset ReportingTestSet "" begin
             );
             manual=true,
         )
+        using ImageTransformations
+        doctest(
+            ConfigurationsJutulDarcy.get_extension(
+                ConfigurationsJutulDarcy, :ImageTransformationsExt
+            );
+            manual=true,
+        )
     end
 
     # Run unit tests.
