@@ -5,13 +5,14 @@ using GLMakie
 using ConfigurationsJutulDarcy
 using JutulDarcy
 using JutulDarcy.Jutul
+using JutulDarcy.Jutul: SVector
 
 Darcy, bar, kg, meter, day, yr = si_units(:darcy, :bar, :kilogram, :meter, :day, :year)
-injection_well_trajectory = [
-    645.0 0.5 75    # First point
-    660.0 0.5 85    # Second point
-    710.0 0.5 100.0  # Third point
-]
+injection_well_trajectory = (
+    SVector(645.0, 0.5, 75),    # First point
+    SVector(660.0, 0.5, 85),    # Second point
+    SVector(710.0, 0.5, 100.0),  # Third point
+)
 
 options = JutulOptions(;
     mesh=MeshOptions(; n=(100, 1, 50), d=(1e1, 1e0, 1e0)),
@@ -25,21 +26,21 @@ options = JutulOptions(;
     fluid_thermal_conductivity=FieldOptions(0.6),
     component_heat_capacity=FieldOptions(4184.0),
     injection=WellOptions(; trajectory=injection_well_trajectory, name=:Injector),
-    time=[
+    time=(
         TimeDependentOptions(;
             years=25.0,
             steps=25,
-            controls=[
+            controls=(
                 WellRateOptions(;
                     type="injector",
                     name=:Injector,
                     fluid_density=9e2,
                     rate_mtons_year=2.05e-5,
                 ),
-            ],
+            ),
         ),
-        TimeDependentOptions(; years=475.0, steps=475, controls=[]),
-    ],
+        TimeDependentOptions(; years=475.0, steps=475, controls=()),
+    ),
 )
 
 # ## Set up a 2D aquifer model
@@ -118,7 +119,7 @@ plot_mesh!(ax, mesh; cells=wc, transparency=true, alpha=0.4)
 # View from the side
 ax.azimuth[] = 1.5 * π
 ax.elevation[] = 0.0
-lines!(ax, options.injection.trajectory'; color=:red)
+lines!(ax, stack(options.injection.trajectory); color=:red)
 display(fig)
 fig
 # Make model
