@@ -5,6 +5,7 @@ using ConfigurationsJutulDarcy
 using ImageTransformations: imresize
 
 function ConfigurationsJutulDarcy.resize_field(grid_dims::Tuple, field)
+    n = grid_dims
     if ndims(field) == 2
         field = imresize(field, n[1], n[end])
     else

@@ -36,6 +36,13 @@ ts = @testset ReportingTestSet "" begin
             );
             manual=true,
         )
+        using JLD2
+        doctest(
+            ConfigurationsJutulDarcy.get_extension(
+                ConfigurationsJutulDarcy, :JLD2Ext
+            );
+            manual=true,
+        )
     end
 
     # Run unit tests.

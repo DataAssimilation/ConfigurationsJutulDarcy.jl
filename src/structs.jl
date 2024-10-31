@@ -2,7 +2,7 @@ using Configurations: @option
 using StaticArrays: SVector
 
 export JutulOptions, MeshOptions
-export SystemOptions, CO2BrineOptions, get_label
+export SystemOptions, CO2BrineOptions, CO2BrineSimpleOptions, get_label, get_kwargs
 export FieldOptions, FieldConstantOptions, FieldFileOptions
 export FluidOptions
 export WellOptions, WellRateOptions, WellPressureOptions
@@ -25,7 +25,42 @@ abstract type SystemOptions end
     thermal::Bool = false
     extra_kwargs = (;)
 end
+
 get_label(::CO2BrineOptions) = :co2brine
+
+function get_kwargs(options::CO2BrineOptions)
+    (;
+        thermal=options.thermal,
+        co2_physics=options.co2_physics,
+        options.extra_kwargs...
+    )
+end
+
+@option struct CO2BrineSimpleOptions <: SystemOptions
+    viscosity_CO2 = 1e-4 # Pascal seconds (decapoise) Reference: https://github.com/lidongzh/FwiFlow.jl
+    viscosity_H2O = 1e-3 # Pascal seconds (decapoise) Reference: https://github.com/lidongzh/FwiFlow.jl
+    density_CO2 = 501.9 # kg/m^3
+    density_H2O = 1053.0 # kg/m^3
+    reference_pressure = 1.5e7 # Pascals
+    compressibility_CO2 = 8e-9 # 1 / Pascals (should be reciprocal of bulk modulus)
+    compressibility_H2O = 3.6563071e-10 # 1 / Pascals (should be reciprocal of bulk modulus)
+    extra_kwargs = (;)
+end
+
+get_label(::CO2BrineSimpleOptions) = :co2brine_simple
+
+function get_kwargs(options::CO2BrineSimpleOptions)
+    (;
+        visCO2 = options.viscosity_CO2,
+        visH2O = options.viscosity_H2O,
+        ρCO2 = options.density_CO2,
+        ρH2O = options.density_H2O,
+        p_ref = options.reference_pressure,
+        compCO2 = options.compressibility_CO2,
+        compH2O = options.compressibility_H2O,
+        options.extra_kwargs...
+    )
+end
 
 @option struct FluidOptions
     "Identifier for viewing options"
@@ -48,7 +83,8 @@ end
 @option struct FieldFileOptions
     file = nothing
     idx = nothing
-    file_key = nothing
+    key = nothing
+    scale = 1
     resize::Bool = false
 end
 
@@ -92,7 +128,7 @@ end
     "number of time steps stored in one file"
     nt::Int64 = 25
 
-    system::CO2BrineOptions = CO2BrineOptions()
+    system::SystemOptions = CO2BrineOptions()
 
     "time interval between 2 adjacent time steps (in days)"
     dt::Float64 = 73.0485
@@ -122,6 +158,7 @@ end
 
     porosity::FieldOptions = FieldOptions(0.1)
     permeability::FieldOptions = FieldOptions(9.869233e-14)
+    permeability_v_over_h::Float64 = 0.36
     temperature::FieldOptions = FieldOptions(3e2)
     rock_density::FieldOptions = FieldOptions(2000.0)
     rock_heat_capacity::FieldOptions = FieldOptions(900.0)

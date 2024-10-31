@@ -4,8 +4,6 @@ using ConfigurationsJutulDarcy
 using JutulDarcy
 using JutulDarcy.Jutul
 
-mD_to_meters2 = 1e-3 * si_unit(:darcy)
-
 function Jutul.CartesianMesh(options::MeshOptions)
     return CartesianMesh(options.n, options.n .* options.d; origin=options.origin)
 end
@@ -19,10 +17,14 @@ function ConfigurationsJutulDarcy.create_field(
     return create_field(nothing, options.suboptions)
 end
 
+Kto3(Kx::AbstractArray{T}; kvoverkh::T) where T = vcat(vec(Kx)', vec(Kx)', kvoverkh * vec(Kx)')
+Kto3(Kx::T; kvoverkh::T) where T = [Kx, kvoverkh * Kx]
+
 function JutulDarcy.reservoir_domain(mesh, options::JutulOptions; kwargs...)
     porosity = create_field(mesh, options.porosity)
     temperature = create_field(mesh, options.temperature)
     permeability = create_field(mesh, options.permeability)
+    permeability = Kto3(permeability; kvoverkh=options.permeability_v_over_h)
     rock_density = create_field(mesh, options.rock_density)
     rock_heat_capacity = create_field(mesh, options.rock_heat_capacity)
     rock_thermal_conductivity = create_field(mesh, options.rock_thermal_conductivity)
@@ -88,13 +90,11 @@ function JutulDarcy.setup_reservoir_forces(model, options::Tuple; bc)
     return dt, forces
 end
 
-function JutulDarcy.setup_reservoir_model(domain, options::CO2BrineOptions; kwargs...)
+function JutulDarcy.setup_reservoir_model(domain, options::SystemOptions; kwargs...)
     return setup_reservoir_model(
         domain,
         get_label(options);
-        thermal=options.thermal,
-        co2_physics=options.co2_physics,
-        options.extra_kwargs...,
+        get_kwargs(options)...,
         kwargs...,
     )
 end
@@ -113,6 +113,47 @@ function JutulDarcy.setup_reservoir_model(mesh, options::JutulOptions)
     domain = reservoir_domain(mesh, options)
     Injector = setup_well(domain, options.injection)
     return setup_reservoir_model(domain, options.system; wells=Injector)
+end
+
+function JutulDarcy.setup_reservoir_model(domain::DataDomain, ::Val{:co2brine_simple};
+        ρH2O = 1053.0, # kg/m^3
+        ρCO2 = 501.9,  # kg/m^3
+        visCO2 = 1e-4, # Pascal seconds (decapoise) Reference: https://github.com/lidongzh/FwiFlow.jl
+        visH2O = 1e-3, # Pascal seconds (decapoise) Reference: https://github.com/lidongzh/FwiFlow.jl
+        compCO2 = 8e-9, # 1 / Pascals
+        compH2O = 3.6563071e-10, # 1 / Pascals
+        p_ref = 1.5e7, # Pascals
+        extra_out = false,
+        kwargs...
+    )
+    sys = ImmiscibleSystem((LiquidPhase(), VaporPhase()), reference_densities = [ρH2O, ρCO2])
+    model = setup_reservoir_model(domain, sys; kwargs..., extra_out = false)
+
+    outvar = model[:Reservoir].output_variables
+    push!(outvar, :Saturations)
+    push!(outvar, :PhaseMassDensities)
+    unique!(outvar)
+
+    density_ref = [ρH2O, ρCO2]
+    compressibility = [compH2O, compCO2]
+    ρ = ConstantCompressibilityDensities(; p_ref, density_ref, compressibility)
+    replace_variables!(model, PhaseMassDensities = ρ)
+    replace_variables!(model, RelativePermeabilities = BrooksCoreyRelativePermeabilities(sys, [2.0, 2.0], [0.1, 0.1], 1.0))
+
+    for (k, m) in pairs(model.models)
+        if k == :Reservoir || JutulDarcy.model_or_domain_is_well(m)
+            set_secondary_variables!(m;
+                PhaseMassDensities = ρ,
+                # PhaseViscosities = JutulDarcy.PhaseViscosities()
+            )
+            set_parameters!(m, Temperature = JutulDarcy.Temperature())
+        end
+    end
+    if extra_out
+        parameters = setup_parameters(model; Reservoir = Dict(:PhaseViscosities=> [visH2O, visCO2]));
+        return model, parameters
+    end
+    return model
 end
 
 end # module
