@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- `FieldFileOptions` reads a field from a JLD2 file. Implemented in JLD2 extension. Field can be automatically resized to match grid size using ImageTransformations extension.
+- Simple anisotropic permeability parameter `permeability_v_over_h` sets the ratio between the vertical permeability and the horizontal permeability.
+- `:co2brine_simple` system is a simplified version of the `co2brine` system in JutulDarcy.
+
 ## [v0.0.4] - 2024-10-30
 
 ### Changed
