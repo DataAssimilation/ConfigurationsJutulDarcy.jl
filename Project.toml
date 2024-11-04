@@ -11,10 +11,12 @@ StaticArrays = "90137ffa-7385-5640-81b9-e52037218182"
 [weakdeps]
 ImageTransformations = "02fcd773-0e25-5acc-982a-7f6622650795"
 JutulDarcy = "82210473-ab04-4dce-b31b-11573c4f8e0a"
+JLD2 = "033835bb-8acc-5ee8-8aae-3f567f8a3819"
 
 [extensions]
 ImageTransformationsExt = "ImageTransformations"
 JutulDarcyExt = "JutulDarcy"
+JLD2Ext = "JLD2"
 
 [compat]
 Configurations = "0.17"
@@ -23,7 +25,9 @@ JutulDarcy = "0.2.35"
 PackageExtensionCompat = "1"
 StaticArrays = "1.9"
 julia = "1.10"
+JLD2 = "0.5"
 
 [extras]
 ImageTransformations = "02fcd773-0e25-5acc-982a-7f6622650795"
 JutulDarcy = "82210473-ab04-4dce-b31b-11573c4f8e0a"
+JLD2 = "033835bb-8acc-5ee8-8aae-3f567f8a3819"

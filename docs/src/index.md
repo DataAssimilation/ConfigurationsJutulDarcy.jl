@@ -34,3 +34,12 @@ Modules = [ConfigurationsJutulDarcy.get_extension(ConfigurationsJutulDarcy, :Ima
 ```@autodocs
 Modules = [ConfigurationsJutulDarcy.get_extension(ConfigurationsJutulDarcy, :ImageTransformationsExt)]
 ```
+
+
+```@index
+Modules = [ConfigurationsJutulDarcy.get_extension(ConfigurationsJutulDarcy, :JLD2Ext)]
+```
+
+```@autodocs
+Modules = [ConfigurationsJutulDarcy.get_extension(ConfigurationsJutulDarcy, :JLD2Ext)]
+```

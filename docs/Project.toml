@@ -6,6 +6,7 @@ JutulDarcy = "82210473-ab04-4dce-b31b-11573c4f8e0a"
 Literate = "98b081ad-f1c9-55d3-8b20-4c87d4299306"
 Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+JLD2 = "033835bb-8acc-5ee8-8aae-3f567f8a3819"
 
 [compat]
 Literate = "2.18"
