@@ -89,10 +89,7 @@ end
 
 function JutulDarcy.setup_reservoir_model(domain, options::SystemOptions; kwargs...)
     return setup_reservoir_model(
-        domain,
-        get_label(options);
-        get_kwargs(options)...,
-        kwargs...,
+        domain, get_label(options); get_kwargs(options)..., kwargs...
     )
 end
 
@@ -112,19 +109,21 @@ function JutulDarcy.setup_reservoir_model(mesh, options::JutulOptions)
     return setup_reservoir_model(domain, options.system; wells=Injector)
 end
 
-function JutulDarcy.setup_reservoir_model(domain::DataDomain, ::Val{:co2brine_simple};
-        ρH2O = 1053.0, # kg/m^3
-        ρCO2 = 501.9,  # kg/m^3
-        visCO2 = 1e-4, # Pascal seconds (decapoise) Reference: https://github.com/lidongzh/FwiFlow.jl
-        visH2O = 1e-3, # Pascal seconds (decapoise) Reference: https://github.com/lidongzh/FwiFlow.jl
-        compCO2 = 8e-9, # 1 / Pascals
-        compH2O = 3.6563071e-10, # 1 / Pascals
-        p_ref = 1.5e7, # Pascals
-        extra_out = false,
-        kwargs...
-    )
-    sys = ImmiscibleSystem((LiquidPhase(), VaporPhase()), reference_densities = [ρH2O, ρCO2])
-    model = setup_reservoir_model(domain, sys; kwargs..., extra_out = false)
+function JutulDarcy.setup_reservoir_model(
+    domain::DataDomain,
+    ::Val{:co2brine_simple};
+    ρH2O=1053.0, # kg/m^3
+    ρCO2=501.9,  # kg/m^3
+    visCO2=1e-4, # Pascal seconds (decapoise) Reference: https://github.com/lidongzh/FwiFlow.jl
+    visH2O=1e-3, # Pascal seconds (decapoise) Reference: https://github.com/lidongzh/FwiFlow.jl
+    compCO2=8e-9, # 1 / Pascals
+    compH2O=3.6563071e-10, # 1 / Pascals
+    p_ref=1.5e7, # Pascals
+    extra_out=false,
+    kwargs...,
+)
+    sys = ImmiscibleSystem((LiquidPhase(), VaporPhase()); reference_densities=[ρH2O, ρCO2])
+    model = setup_reservoir_model(domain, sys; kwargs..., extra_out=false)
 
     outvar = model[:Reservoir].output_variables
     push!(outvar, :Saturations)
@@ -134,19 +133,24 @@ function JutulDarcy.setup_reservoir_model(domain::DataDomain, ::Val{:co2brine_si
     density_ref = [ρH2O, ρCO2]
     compressibility = [compH2O, compCO2]
     ρ = ConstantCompressibilityDensities(; p_ref, density_ref, compressibility)
-    replace_variables!(model, PhaseMassDensities = ρ)
-    replace_variables!(model, RelativePermeabilities = BrooksCoreyRelativePermeabilities(sys, [2.0, 2.0], [0.1, 0.1], 1.0))
+    replace_variables!(model; PhaseMassDensities=ρ)
+    replace_variables!(
+        model;
+        RelativePermeabilities=BrooksCoreyRelativePermeabilities(
+            sys, [2.0, 2.0], [0.1, 0.1], 1.0
+        ),
+    )
 
     for (k, m) in pairs(model.models)
         if k == :Reservoir || JutulDarcy.model_or_domain_is_well(m)
-            set_secondary_variables!(m;
-                PhaseMassDensities = ρ,
-            )
-            set_parameters!(m, Temperature = JutulDarcy.Temperature())
+            set_secondary_variables!(m; PhaseMassDensities=ρ)
+            set_parameters!(m; Temperature=JutulDarcy.Temperature())
         end
     end
     if extra_out
-        parameters = setup_parameters(model; Reservoir = Dict(:PhaseViscosities=> [visH2O, visCO2]));
+        parameters = setup_parameters(
+            model; Reservoir=Dict(:PhaseViscosities => [visH2O, visCO2])
+        )
         return model, parameters
     end
     return model

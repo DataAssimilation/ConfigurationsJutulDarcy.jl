@@ -113,9 +113,7 @@ if ConfigurationsJutulDarcy.HAS_NATIVE_EXTENSIONS
     )
     using JLD2
     DocMeta.setdocmeta!(
-        ConfigurationsJutulDarcy.get_extension(
-            ConfigurationsJutulDarcy, :JLD2Ext
-        ),
+        ConfigurationsJutulDarcy.get_extension(ConfigurationsJutulDarcy, :JLD2Ext),
         :DocTestSetup,
         :(using ConfigurationsJutulDarcy, Test);
         recursive=true,
@@ -128,9 +126,7 @@ makedocs(;
         ConfigurationsJutulDarcy.get_extension(
             ConfigurationsJutulDarcy, :ImageTransformationsExt
         ),
-        ConfigurationsJutulDarcy.get_extension(
-            ConfigurationsJutulDarcy, :JLD2Ext
-        ),
+        ConfigurationsJutulDarcy.get_extension(ConfigurationsJutulDarcy, :JLD2Ext),
     ],
     authors="Grant Bruer gbruer15@gmail.com and contributors",
     sitename="ConfigurationsJutulDarcy.jl",

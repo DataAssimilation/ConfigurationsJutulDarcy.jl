@@ -38,9 +38,7 @@ ts = @testset ReportingTestSet "" begin
         )
         using JLD2
         doctest(
-            ConfigurationsJutulDarcy.get_extension(
-                ConfigurationsJutulDarcy, :JLD2Ext
-            );
+            ConfigurationsJutulDarcy.get_extension(ConfigurationsJutulDarcy, :JLD2Ext);
             manual=true,
         )
     end

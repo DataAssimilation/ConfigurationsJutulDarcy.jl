@@ -29,10 +29,8 @@ end
 get_label(::CO2BrineOptions) = :co2brine
 
 function get_kwargs(options::CO2BrineOptions)
-    (;
-        thermal=options.thermal,
-        co2_physics=options.co2_physics,
-        options.extra_kwargs...
+    return (;
+        thermal=options.thermal, co2_physics=options.co2_physics, options.extra_kwargs...
     )
 end
 
@@ -50,15 +48,15 @@ end
 get_label(::CO2BrineSimpleOptions) = :co2brine_simple
 
 function get_kwargs(options::CO2BrineSimpleOptions)
-    (;
-        visCO2 = options.viscosity_CO2,
-        visH2O = options.viscosity_H2O,
-        ρCO2 = options.density_CO2,
-        ρH2O = options.density_H2O,
-        p_ref = options.reference_pressure,
-        compCO2 = options.compressibility_CO2,
-        compH2O = options.compressibility_H2O,
-        options.extra_kwargs...
+    return (;
+        visCO2=options.viscosity_CO2,
+        visH2O=options.viscosity_H2O,
+        ρCO2=options.density_CO2,
+        ρH2O=options.density_H2O,
+        p_ref=options.reference_pressure,
+        compCO2=options.compressibility_CO2,
+        compH2O=options.compressibility_H2O,
+        options.extra_kwargs...,
     )
 end
 

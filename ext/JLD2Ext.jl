@@ -35,5 +35,4 @@ function ConfigurationsJutulDarcy.create_field(grid_dims::Tuple, options::FieldF
     end
 end
 
-
 end # module
