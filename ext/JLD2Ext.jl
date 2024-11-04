@@ -33,7 +33,6 @@ function ConfigurationsJutulDarcy.create_field(grid_dims::Tuple, options::FieldF
         end
         field = resize_field(grid_dims, field)
     end
-    return reshape(field, :)
 end
 
 

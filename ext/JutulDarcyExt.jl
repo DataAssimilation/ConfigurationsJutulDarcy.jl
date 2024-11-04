@@ -17,9 +17,6 @@ function ConfigurationsJutulDarcy.create_field(
     return create_field(nothing, options.suboptions)
 end
 
-Kto3(Kx::AbstractArray{T}; kvoverkh::T) where T = vcat(vec(Kx)', vec(Kx)', kvoverkh * vec(Kx)')
-Kto3(Kx::T; kvoverkh::T) where T = [Kx, kvoverkh * Kx]
-
 function JutulDarcy.reservoir_domain(mesh, options::JutulOptions; kwargs...)
     porosity = create_field(mesh, options.porosity)
     temperature = create_field(mesh, options.temperature)
@@ -144,7 +141,6 @@ function JutulDarcy.setup_reservoir_model(domain::DataDomain, ::Val{:co2brine_si
         if k == :Reservoir || JutulDarcy.model_or_domain_is_well(m)
             set_secondary_variables!(m;
                 PhaseMassDensities = ρ,
-                # PhaseViscosities = JutulDarcy.PhaseViscosities()
             )
             set_parameters!(m, Temperature = JutulDarcy.Temperature())
         end
