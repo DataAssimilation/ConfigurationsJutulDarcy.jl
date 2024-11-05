@@ -11,6 +11,7 @@ end
 function ConfigurationsJutulDarcy.create_field(mesh::CartesianMesh, options::FieldOptions)
     return create_field(mesh.dims, options)
 end
+
 function ConfigurationsJutulDarcy.create_field(
     mesh::UnstructuredMesh, options::FieldOptions
 )
@@ -87,10 +88,22 @@ function JutulDarcy.setup_reservoir_forces(model, options::Tuple; bc)
     return dt, forces
 end
 
-function JutulDarcy.setup_reservoir_model(domain, options::SystemOptions; kwargs...)
-    return setup_reservoir_model(
-        domain, get_label(options); get_kwargs(options)..., kwargs...
+function JutulDarcy.setup_reservoir_model(domain, options::SystemOptions; extra_out=false, kwargs...)
+    model = setup_reservoir_model(
+        domain, get_label(options); get_kwargs(options)..., extra_out=false, kwargs...
     )
+    sys = model.models.Reservoir.system
+    replace_variables!(
+        model;
+        RelativePermeabilities=BrooksCoreyRelativePermeabilities(
+            sys, [2.0, 2.0], [0.1, 0.1], 1.0
+        ),
+    )
+    if extra_out
+        parameters = setup_parameters(model)
+        return model, parameters
+    end
+    return model
 end
 
 function JutulDarcy.setup_reservoir_state(
@@ -124,6 +137,7 @@ function JutulDarcy.setup_reservoir_model(
 )
     sys = ImmiscibleSystem((LiquidPhase(), VaporPhase()); reference_densities=[ρH2O, ρCO2])
     model = setup_reservoir_model(domain, sys; kwargs..., extra_out=false)
+    domain[:PhaseViscosities, NoEntity()] = [visH2O, visCO2]
 
     outvar = model[:Reservoir].output_variables
     push!(outvar, :Saturations)
@@ -134,12 +148,6 @@ function JutulDarcy.setup_reservoir_model(
     compressibility = [compH2O, compCO2]
     ρ = ConstantCompressibilityDensities(; p_ref, density_ref, compressibility)
     replace_variables!(model; PhaseMassDensities=ρ)
-    replace_variables!(
-        model;
-        RelativePermeabilities=BrooksCoreyRelativePermeabilities(
-            sys, [2.0, 2.0], [0.1, 0.1], 1.0
-        ),
-    )
 
     for (k, m) in pairs(model.models)
         if k == :Reservoir || JutulDarcy.model_or_domain_is_well(m)
@@ -148,12 +156,22 @@ function JutulDarcy.setup_reservoir_model(
         end
     end
     if extra_out
-        parameters = setup_parameters(
-            model; Reservoir=Dict(:PhaseViscosities => [visH2O, visCO2])
-        )
+        parameters = setup_parameters(model)
         return model, parameters
     end
     return model
+end
+
+function Jutul.default_parameter_values(data_domain, model, param::JutulDarcy.PhaseViscosities, symb)
+    if haskey(data_domain, :PhaseViscosities, Cells())
+        return data_domain[:PhaseViscosities]
+    end
+    if haskey(data_domain, :PhaseViscosities, NoEntity())
+        nc = data_domain.entities[Cells()]
+        vis = data_domain[:PhaseViscosities, NoEntity()]
+        return repeat(vis, 1, nc)
+    end
+    return Jutul.default_values(model, param)
 end
 
 end # module
