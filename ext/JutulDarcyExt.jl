@@ -5,7 +5,7 @@ using JutulDarcy
 using JutulDarcy.Jutul
 
 function Jutul.CartesianMesh(options::MeshOptions)
-    return CartesianMesh(options.n, options.n .* options.d; origin=options.origin)
+    return CartesianMesh(options.n, Float64.(options.n .* options.d); origin=options.origin)
 end
 
 function ConfigurationsJutulDarcy.create_field(mesh::CartesianMesh, options::FieldOptions)
