@@ -116,7 +116,7 @@ end
 
 @option struct TimeDependentOptions
     years::Float64
-    steps::Int64
+    steps::Int64 = 1
     controls::Tuple
 end
 

@@ -13,6 +13,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Simple anisotropic permeability parameter `permeability_v_over_h` sets the ratio between the vertical permeability and the horizontal permeability.
 - `:co2brine_simple` system is a simplified version of the `co2brine` system in JutulDarcy.
 
+### Changed
+
+- Set default value for `TimeDependentOptions.steps` to 1. 
+
 ## [v0.0.4] - 2024-10-30
 
 ### Changed
