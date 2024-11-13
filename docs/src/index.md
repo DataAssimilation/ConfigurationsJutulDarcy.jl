@@ -4,7 +4,7 @@ CurrentModule = ConfigurationsJutulDarcy
 
 # ConfigurationsJutulDarcy
 
-Documentation for [ConfigurationsJutulDarcy](https://github.com/gbruer15/ConfigurationsJutulDarcy.jl.jl).
+Documentation for [ConfigurationsJutulDarcy](https://github.com/DataAssimilation/ConfigurationsJutulDarcy.jl.jl).
 
 
 ```@index

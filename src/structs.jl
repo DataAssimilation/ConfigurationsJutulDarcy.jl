@@ -116,7 +116,7 @@ end
 
 @option struct TimeDependentOptions
     years::Float64
-    steps::Int64
+    steps::Int64 = 1
     controls::Tuple
 end
 
@@ -169,11 +169,7 @@ end
         name=:Injector,
     )
 
-    production::WellOptions = WellOptions(;
-        active=false,
-        trajectory=(SVector(2875.0, 50.0, 1693.75), SVector(2875.0, 50.0, 1693.75 + 37.5)),
-        name=:Producer,
-    )
+    production::WellOptions = WellOptions(; active=false, trajectory=(), name=:Producer)
 
     time::Tuple = (
         TimeDependentOptions(;
