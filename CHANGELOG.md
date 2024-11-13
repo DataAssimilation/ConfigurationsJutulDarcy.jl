@@ -17,6 +17,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Set default value for `TimeDependentOptions.steps` to 1. 
 
+### Removed
+
+- Production well no longer has default trajectory.
+
 ## [v0.0.4] - 2024-10-30
 
 ### Changed

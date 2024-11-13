@@ -171,7 +171,7 @@ end
 
     production::WellOptions = WellOptions(;
         active=false,
-        trajectory=(SVector(2875.0, 50.0, 1693.75), SVector(2875.0, 50.0, 1693.75 + 37.5)),
+        trajectory=(),
         name=:Producer,
     )
 
