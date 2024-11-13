@@ -88,7 +88,9 @@ function JutulDarcy.setup_reservoir_forces(model, options::Tuple; bc)
     return dt, forces
 end
 
-function JutulDarcy.setup_reservoir_model(domain, options::SystemOptions; extra_out=false, kwargs...)
+function JutulDarcy.setup_reservoir_model(
+    domain, options::SystemOptions; extra_out=false, kwargs...
+)
     model = setup_reservoir_model(
         domain, get_label(options); get_kwargs(options)..., extra_out=false, kwargs...
     )
@@ -162,7 +164,9 @@ function JutulDarcy.setup_reservoir_model(
     return model
 end
 
-function Jutul.default_parameter_values(data_domain, model, param::JutulDarcy.PhaseViscosities, symb)
+function Jutul.default_parameter_values(
+    data_domain, model, param::JutulDarcy.PhaseViscosities, symb
+)
     if haskey(data_domain, :PhaseViscosities, Cells())
         return data_domain[:PhaseViscosities]
     end

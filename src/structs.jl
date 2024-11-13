@@ -169,11 +169,7 @@ end
         name=:Injector,
     )
 
-    production::WellOptions = WellOptions(;
-        active=false,
-        trajectory=(),
-        name=:Producer,
-    )
+    production::WellOptions = WellOptions(; active=false, trajectory=(), name=:Producer)
 
     time::Tuple = (
         TimeDependentOptions(;
