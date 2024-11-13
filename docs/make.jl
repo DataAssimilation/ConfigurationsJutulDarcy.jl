@@ -133,13 +133,13 @@ makedocs(;
     source=DOC_STAGE,
     build=DOC_BUILD,
     format=Documenter.HTML(;
-        repolink="https://github.com/gbruer15/ConfigurationsJutulDarcy.jl",
-        canonical="https://gbruer15.github.io/ConfigurationsJutulDarcy.jl",
+        repolink="https://github.com/DataAssimilation/ConfigurationsJutulDarcy.jl",
+        canonical="https://DataAssimilation.github.io/ConfigurationsJutulDarcy.jl",
         edit_link="main",
         assets=String[],
         size_threshold=20 * 2^20,
     ),
-    repo="github.com/gbruer15/ConfigurationsJutulDarcy.jl",
+    repo="github.com/DataAssimilation/ConfigurationsJutulDarcy.jl",
     pages=[
         "Home" => "index.md",
         "Examples" => examples_markdown,

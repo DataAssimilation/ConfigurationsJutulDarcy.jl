@@ -3,13 +3,13 @@
 |  |     |
 |--|:---:|
 | [**Documentation**][docs-latest-url]    | [<img src="https://img.shields.io/badge/docs-latest-blue.svg" alt = "doc badge" height="30">][docs-latest-url] |
-| [**CI tests**][checks-url]        | [<img src="https://github.com/gbruer15/ConfigurationsJutulDarcy.jl/actions/workflows/checks.yaml/badge.svg?branch=main" alt = "CI badge" height="30">][checks-url] |
-| [**Code Coverage**][codecov-url]    | [<img src="https://gbruer15.github.io/ConfigurationsJutulDarcy.jl/coverage/badge.svg" alt = "coverage badge" height="30">][codecov-url] |
+| [**CI tests**][checks-url]        | [<img src="https://github.com/DataAssimilation/ConfigurationsJutulDarcy.jl/actions/workflows/checks.yaml/badge.svg?branch=main" alt = "CI badge" height="30">][checks-url] |
+| [**Code Coverage**][codecov-url]    | [<img src="https://DataAssimilation.github.io/ConfigurationsJutulDarcy.jl/coverage/badge.svg" alt = "coverage badge" height="30">][codecov-url] |
 
-[docs-latest-url]: https://gbruer15.github.io/ConfigurationsJutulDarcy.jl
-[checks-url]: https://github.com/gbruer15/ConfigurationsJutulDarcy.jl/actions/workflows/checks.yaml?query=branch%3Amain
-[docs-build-url]: https://github.com/gbruer15/ConfigurationsJutulDarcy.jl/actions/workflows/docs.yaml?query=branch%3Amain
-[codecov-url]: https://gbruer15.github.io/ConfigurationsJutulDarcy.jl/coverage/
+[docs-latest-url]: https://DataAssimilation.github.io/ConfigurationsJutulDarcy.jl
+[checks-url]: https://github.com/DataAssimilation/ConfigurationsJutulDarcy.jl/actions/workflows/checks.yaml?query=branch%3Amain
+[docs-build-url]: https://github.com/DataAssimilation/ConfigurationsJutulDarcy.jl/actions/workflows/docs.yaml?query=branch%3Amain
+[codecov-url]: https://DataAssimilation.github.io/ConfigurationsJutulDarcy.jl/coverage/
 
 This package defines parameters for [JutulDarcy.jl][JutulDarcy.jl] simulations using
 [Configurations.jl][Configurations.jl].
@@ -17,7 +17,7 @@ This package defines parameters for [JutulDarcy.jl][JutulDarcy.jl] simulations u
 The goal of this package is to make it easy to define parameters for JutulDarcy as a simple
 Julia file.
 
-See the beginning of [this example](https://gbruer15.github.io/ConfigurationsJutulDarcy.jl/examples/simple-usage/) for the
+See the beginning of [this example](https://DataAssimilation.github.io/ConfigurationsJutulDarcy.jl/examples/simple-usage/) for the
 ease of defining relevant simulation parameters.
 
 [JutulDarcy.jl]: https://github.com/sintefmath/JutulDarcy.jl/
