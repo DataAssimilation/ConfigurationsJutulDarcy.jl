@@ -16,6 +16,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Set default value for `TimeDependentOptions.steps` to 1. 
+- Examples are run only when creating docs, not when running CI tests.
+- Updated compat entry for JutulDarcy to include 0.2.36 and 0.2.37 (no interface changes).
 
 ### Removed
 
