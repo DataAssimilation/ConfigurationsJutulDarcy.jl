@@ -206,11 +206,7 @@ for T in [
     end
     @eval function Base.hash(x::$T, h::UInt)
         hash_init = Base.hash(:ConfigurationsJutulDarcy, Base.hash(Symbol($T), h))
-        h = foldl(
-            (r, f) -> Base.hash(getfield(x, f), r),
-            fieldnames($T);
-            init = hash_init
-        )
+        h = foldl((r, f) -> Base.hash(getfield(x, f), r), fieldnames($T); init=hash_init)
         return h
     end
 end
