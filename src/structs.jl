@@ -185,7 +185,7 @@ end
     )
 end
 
-# Define copy constructors.
+# Define copy constructors and hash function.
 for T in [
     :JutulOptions,
     :MeshOptions,
@@ -204,6 +204,7 @@ for T in [
         default_kwargs = (f => getfield(x, f) for f in fieldnames($T))
         return $T(; default_kwargs..., kwargs...)
     end
+
     @eval function Base.hash(x::$T, h::UInt)
         hash_init = Base.hash(:ConfigurationsJutulDarcy, Base.hash(Symbol($T), h))
         h = foldl(

@@ -7,17 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v0.0.5] - 2025-03-12
+
 ### Added
 
 - `FieldFileOptions` reads a field from a JLD2 file. Implemented in JLD2 extension. Field can be automatically resized to match grid size using ImageTransformations extension.
 - Simple anisotropic permeability parameter `permeability_v_over_h` sets the ratio between the vertical permeability and the horizontal permeability.
 - `:co2brine_simple` system is a simplified version of the `co2brine` system in JutulDarcy.
+- Implemented `Base.hash` on the options types to make the hash stable across compilations.
 
 ### Changed
 
 - Set default value for `TimeDependentOptions.steps` to 1. 
 - Examples are run only when creating docs, not when running CI tests.
 - Updated compat entry for JutulDarcy to include 0.2.36 and 0.2.37 (no interface changes).
+- Updated `runtests.jl` to error instead of exiting on test failure.
 
 ### Removed
 
