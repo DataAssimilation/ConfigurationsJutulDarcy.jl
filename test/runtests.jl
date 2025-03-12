@@ -45,10 +45,11 @@ ts = @testset ReportingTestSet "" begin
 
     # Run unit tests.
     include("test_conversion.jl")
+    include("test_hash.jl")
 end
 
 outputfilename = joinpath(@__DIR__, "..", "report.xml")
 open(outputfilename, "w") do fh
     print(fh, report(ts))
 end
-exit(any_problems(ts))
+@assert any_problems(ts) == 0
