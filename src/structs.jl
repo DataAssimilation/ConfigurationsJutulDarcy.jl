@@ -189,8 +189,8 @@ end
 for T in [
     :JutulOptions,
     :MeshOptions,
-    :SystemOptions,
     :CO2BrineOptions,
+    :CO2BrineSimpleOptions,
     :FieldOptions,
     :FieldConstantOptions,
     :FieldFileOptions,
